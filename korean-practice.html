@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한국어 회화 연습 | 韓国語会話練習</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF6F0;
+    --warm-white: #FFFDF9;
+    --red: #C0392B;
+    --deep-red: #96281B;
+    --gold: #D4A853;
+    --dark: #2C1810;
+    --mid: #6B4C3B;
+    --light: #A08070;
+    --border: #E8DDD3;
+    --card-bg: #FFFDF9;
+    --shadow: 0 4px 24px rgba(44,24,16,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 48px;
+  }
+
+  /* === HEADER === */
+  header {
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    padding: 40px 0 28px;
+    position: relative;
+  }
+
+  .header-deco {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    color: var(--red);
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 6vw, 42px);
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+
+  h1 span {
+    color: var(--red);
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--light);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .divider {
+    margin: 20px auto;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* === CATEGORY TABS === */
+  .categories {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 720px;
+    width: 100%;
+    margin-bottom: 28px;
+  }
+
+  .cat-btn {
+    padding: 8px 18px;
+    border: 1.5px solid var(--border);
+    background: var(--warm-white);
+    color: var(--mid);
+    border-radius: 30px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .cat-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .cat-btn.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+    box-shadow: 0 2px 12px rgba(192,57,43,0.25);
+  }
+
+  /* === MAIN CARD === */
+  .card {
+    width: 100%;
+    max-width: 720px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .card-top {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--mid) 100%);
+    padding: 28px 32px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-top::before {
+    content: '한';
+    position: absolute;
+    right: -12px;
+    top: -20px;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 120px;
+    color: rgba(255,255,255,0.05);
+    font-weight: 600;
+    user-select: none;
+  }
+
+  .scene-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .korean-main {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(22px, 5vw, 34px);
+    color: white;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+
+  .romanization {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    margin-bottom: 4px;
+    font-style: italic;
+  }
+
+  /* === CARD BODY === */
+  .card-body {
+    padding: 24px 32px;
+  }
+
+  .japanese-line {
+    font-size: 18px;
+    color: var(--dark);
+    font-weight: 500;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  .toggle-answer {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 1.5px solid var(--gold);
+    border-radius: 30px;
+    color: var(--mid);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin-bottom: 18px;
+  }
+
+  .toggle-answer:hover {
+    background: var(--gold);
+    color: white;
+  }
+
+  .answer-block {
+    display: none;
+    background: #FFF8EE;
+    border-left: 3px solid var(--gold);
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 18px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .answer-block.visible { display: block; }
+
+  .answer-block .answer-kr {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+
+  .answer-block .answer-rom {
+    font-size: 12px;
+    color: var(--light);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  .answer-block .answer-note {
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  /* === PRONUNCIATION TIP === */
+  .tip-box {
+    background: rgba(192,57,43,0.06);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  .tip-box strong {
+    color: var(--red);
+    font-size: 11px;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* === VOCAB === */
+  .vocab-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .vocab-chip {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  .vocab-chip .kr {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    color: var(--dark);
+    display: block;
+  }
+
+  /* === NAVIGATION === */
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    border-top: 1px solid var(--border);
+    background: var(--cream);
+  }
+
+  .nav-btn {
+    padding: 10px 24px;
+    border-radius: 30px;
+    border: 1.5px solid var(--border);
+    background: white;
+    color: var(--mid);
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .nav-btn.primary {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+    box-shadow: 0 2px 12px rgba(192,57,43,0.25);
+  }
+
+  .nav-btn.primary:hover {
+    background: var(--deep-red);
+    border-color: var(--deep-red);
+  }
+
+  .counter {
+    font-size: 13px;
+    color: var(--light);
+  }
+
+  /* === PROGRESS === */
+  .progress-bar-wrap {
+    width: 100%;
+    max-width: 720px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* === QUIZ MODE === */
+  .mode-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--border);
+    border-radius: 30px;
+    padding: 4px;
+    margin: 0 auto 24px;
+  }
+
+  .mode-btn {
+    padding: 7px 20px;
+    border-radius: 26px;
+    border: none;
+    background: transparent;
+    color: var(--mid);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .mode-btn.active {
+    background: white;
+    color: var(--dark);
+    box-shadow: 0 1px 6px rgba(44,24,16,0.12);
+    font-weight: 500;
+  }
+
+  /* === QUIZ CHOICES === */
+  .quiz-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .choice-btn {
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: white;
+    color: var(--dark);
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Noto Serif KR', serif;
+    line-height: 1.5;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .choice-btn:hover:not(:disabled) {
+    border-color: var(--red);
+  }
+
+  .choice-btn.correct {
+    background: #e8f5e9;
+    border-color: #4caf50;
+    color: #2e7d32;
+  }
+
+  .choice-btn.wrong {
+    background: #fde8e8;
+    border-color: var(--red);
+    color: var(--deep-red);
+  }
+
+  .choice-btn:disabled { cursor: default; }
+
+  .result-msg {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .result-msg.ok { background: #e8f5e9; color: #2e7d32; display: block; }
+  .result-msg.ng { background: #fde8e8; color: var(--deep-red); display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .score-display {
+    font-size: 12px;
+    color: var(--light);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  /* === SPEECH BUTTON === */
+  .speak-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 18px;
+    border-radius: 30px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.12);
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+  }
+
+  .speak-btn:hover {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  .speak-btn.speaking {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark);
+    animation: pulse 0.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { box-shadow: 0 0 0 0 rgba(212,168,83,0.4); }
+    to   { box-shadow: 0 0 0 8px rgba(212,168,83,0); }
+  }
+
+  .no-tts-msg {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 8px;
+    display: none;
+  }
+
+  /* クイズの音声ボタン（小さめ） */
+  .speak-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: white;
+    color: var(--mid);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+  }
+
+  .speak-sm:hover { border-color: var(--gold); color: var(--gold); }
+  .speak-sm.speaking { border-color: var(--gold); color: var(--gold); background: #FFF8EE; }
+
+  @media (max-width: 480px) {
+    .card-top, .card-body, .nav-row { padding-left: 20px; padding-right: 20px; }
+    .quiz-choices { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-deco">일상 회화 연습</div>
+  <h1>韓国語 <span>会話</span> 練習</h1>
+  <p class="subtitle">日常のシーンで使えるフレーズを学ぼう</p>
+  <div class="divider"></div>
+</header>
+
+<!-- Mode Toggle -->
+<div class="mode-toggle">
+  <button class="mode-btn active" onclick="setMode('study')" id="btn-study">📖 学習モード</button>
+  <button class="mode-btn" onclick="setMode('quiz')" id="btn-quiz">🎯 クイズモード</button>
+</div>
+
+<!-- Category Tabs -->
+<div class="categories" id="cat-tabs"></div>
+
+<!-- Progress Bar -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+</div>
+
+<!-- Main Card -->
+<div class="card">
+  <div class="card-top">
+    <div class="scene-label" id="scene-label">あいさつ</div>
+    <div class="korean-main" id="korean-main">안녕하세요</div>
+    <div class="romanization" id="romanization">annyeonghaseyo</div>
+    <button class="speak-btn" id="speak-main-btn" onclick="speakMain()">
+      🔊 <span id="speak-main-label">発音を聞く</span>
+    </button>
+    <div class="no-tts-msg" id="no-tts-msg">※ このブラウザは韓国語音声に対応していません</div>
+  </div>
+
+  <div class="card-body">
+    <!-- STUDY MODE -->
+    <div id="study-area">
+      <div class="japanese-line" id="japanese-line">こんにちは / はじめまして</div>
+
+      <button class="toggle-answer" onclick="toggleAnswer()" id="toggle-btn">💬 使い方を見る</button>
+
+      <div class="answer-block" id="answer-block">
+        <div class="answer-kr" id="answer-kr"></div>
+        <div class="answer-rom" id="answer-rom"></div>
+        <div class="answer-note" id="answer-note"></div>
+      </div>
+
+      <div class="tip-box" id="tip-box"></div>
+
+      <div class="vocab-row" id="vocab-row"></div>
+    </div>
+
+    <!-- QUIZ MODE -->
+    <div id="quiz-area" style="display:none">
+      <div class="japanese-line" id="q-question"></div>
+      <button class="speak-sm" id="speak-quiz-btn" onclick="speakQuiz()">🔊 正解の発音を聞く</button>
+      <div class="score-display" id="score-display">スコア: 0 / 0</div>
+      <div class="quiz-choices" id="quiz-choices"></div>
+      <div class="result-msg" id="result-msg"></div>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="prev()">← 前へ</button>
+    <span class="counter" id="counter">1 / 1</span>
+    <button class="nav-btn primary" onclick="next()">次へ →</button>
+  </div>
+</div>
+
+<script>
+// =====================
+// DATA
+// =====================
+const allPhrases = [
+  // あいさつ
+  { cat:'あいさつ', kr:'안녕하세요', rom:'annyeonghaseyo', jp:'こんにちは / はじめまして',
+    usage:'아녕하세요! 저는 유키입니다', usageRom:'annyeonghaseyo! jeoneun yuki imnida',
+    usageNote:'「こんにちは！私はゆきです」→ 初対面でも日常でも使える万能あいさつ',
+    tip:'「안녕」だけだとカジュアルな「やあ」になります。目上の人には必ず「안녕하세요」を使いましょう。',
+    vocab:[{kr:'저', rom:'jeo', jp:'私（丁寧）'},{kr:'이름', rom:'ireum', jp:'名前'},{kr:'반갑습니다', rom:'bangapseumnida', jp:'よろしくお願いします'}]
+  },
+  { cat:'あいさつ', kr:'감사합니다', rom:'gamsahamnida', jp:'ありがとうございます',
+    usage:'도와주셔서 감사합니다', usageRom:'dowajusyeoseo gamsahamnida',
+    usageNote:'「助けてくださってありがとうございます」→ カジュアルは「고마워요(gomawoeyo)」',
+    tip:'「합니다」は丁寧語の語尾。友達には「고마워」だけでもOK。',
+    vocab:[{kr:'고마워요', rom:'gomawoeyo', jp:'ありがとう（カジュアル）'},{kr:'천만에요', rom:'cheonmaneyo', jp:'どういたしまして'}]
+  },
+  { cat:'あいさつ', kr:'안녕히 가세요', rom:'annyeonghi gaseyo', jp:'さようなら（去る人に）',
+    usage:'내일 또 봐요. 안녕히 가세요!', usageRom:'naeil tto bwayo. annyeonghi gaseyo!',
+    usageNote:'「また明日。さようなら！」→ その場に残る人が、去る人に言う言葉',
+    tip:'去る人に「안녕히 가세요」、残る人に「안녕히 계세요」— ちゃんと使い分けましょう！',
+    vocab:[{kr:'내일', rom:'naeil', jp:'明日'},{kr:'또', rom:'tto', jp:'また'},{kr:'봐요', rom:'bwayo', jp:'会いましょう'}]
+  },
+  { cat:'あいさつ', kr:'잘 지냈어요?', rom:'jal jinaesseoyo?', jp:'お元気でしたか？',
+    usage:'오랜만이에요! 잘 지냈어요?', usageRom:'oraenmanieeyo! jal jinaesseoyo?',
+    usageNote:'「久しぶりです！お元気でしたか？」→ 久しぶりに会った人への定番フレーズ',
+    tip:'「오랜만이에요」は「久しぶり」の丁寧版。友達には「오랜만이야！」でOK。',
+    vocab:[{kr:'오랜만', rom:'oraenman', jp:'久しぶり'},{kr:'잘', rom:'jal', jp:'よく・元気に'},{kr:'지내다', rom:'jinaeda', jp:'過ごす'}]
+  },
+  // レストラン
+  { cat:'レストラン', kr:'이거 주세요', rom:'igeo juseyo', jp:'これをください',
+    usage:'이거 하나 주세요', usageRom:'igeo hana juseyo',
+    usageNote:'「これを一つください」→ メニューを指差しながら使える超便利フレーズ',
+    tip:'「주세요」は「〜ください」の意味。数字+「개(gae)」で個数を言えます：하나(1)、둘(2)、셋(3)…',
+    vocab:[{kr:'이거', rom:'igeo', jp:'これ'},{kr:'하나', rom:'hana', jp:'一つ'},{kr:'메뉴', rom:'menyu', jp:'メニュー'}]
+  },
+  { cat:'レストラン', kr:'얼마예요?', rom:'eolmayeyo?', jp:'いくらですか？',
+    usage:'이거 얼마예요? 비싸요?', usageRom:'igeo eolmayeyo? bissayo?',
+    usageNote:'「これはいくらですか？高いですか？」→ 値段を聞く基本フレーズ',
+    tip:'数字は固有語数詞（하나、둘…）と漢字語数詞（일、이、삼…）の2種類あります。金額は漢字語系を使います。',
+    vocab:[{kr:'비싸요', rom:'bissayo', jp:'高いです'},{kr:'싸요', rom:'ssayo', jp:'安いです'},{kr:'원', rom:'won', jp:'ウォン（通貨）'}]
+  },
+  { cat:'レストラン', kr:'맵지 않게 해주세요', rom:'maepji anke haejuseyo', jp:'辛くしないでください',
+    usage:'저는 맵지 않게 해주세요', usageRom:'jeoneun maepji anke haejuseyo',
+    usageNote:'「私は辛くしないでください」→ 辛い物が苦手な時に使えるフレーズ',
+    tip:'「맵다」は辛い。韓国料理に多いので覚えておくと安心！「조금만 맵게(少し辛く)」なども応用できます。',
+    vocab:[{kr:'맵다', rom:'maepda', jp:'辛い'},{kr:'조금', rom:'joGeum', jp:'少し'},{kr:'안', rom:'an', jp:'〜しない'}]
+  },
+  { cat:'レストラン', kr:'맛있어요!', rom:'massisseoyo!', jp:'おいしいです！',
+    usage:'와, 정말 맛있어요!', usageRom:'wa, jeongmal massisseoyo!',
+    usageNote:'「わあ、本当においしいです！」→ 食事の最高のほめ言葉',
+    tip:'「맛있다」の活用。カジュアルに「맛있어！」、友達に言うなら十分です。食堂でおじさんに言うと喜ばれます！',
+    vocab:[{kr:'와', rom:'wa', jp:'わあ'},{kr:'정말', rom:'jeongmal', jp:'本当に'},{kr:'너무', rom:'neomu', jp:'とても'}]
+  },
+  // 買い物
+  { cat:'買い物', kr:'이것 좀 보여주세요', rom:'igeot jom boyeojuseyo', jp:'これを見せてください',
+    usage:'저기요, 이것 좀 보여주세요', usageRom:'jeogiyo, igeot jom boyeojuseyo',
+    usageNote:'「すみません、これを見せてください」→ ショッピング必須フレーズ',
+    tip:'「저기요」は「すみません」と声をかける時の便利な言葉。店員を呼ぶ時に使います。',
+    vocab:[{kr:'저기요', rom:'jeogiyo', jp:'すみません'},{kr:'좀', rom:'jom', jp:'ちょっと（お願い）'},{kr:'이것', rom:'igeot', jp:'これ'}]
+  },
+  { cat:'買い物', kr:'입어봐도 돼요?', rom:'ibeoboado dwaeyo?', jp:'試着してもいいですか？',
+    usage:'이거 입어봐도 돼요? 사이즈가 있어요?', usageRom:'igeo ibeoboado dwaeyo? saijeuGa isseoyo?',
+    usageNote:'「これ試着してもいいですか？サイズはありますか？」',
+    tip:'「〜봐도 돼요?」は「〜してみてもいいですか？」の意味。「먹어봐도 돼요?（食べてみていい?）」にも使えます。',
+    vocab:[{kr:'사이즈', rom:'saijeu', jp:'サイズ'},{kr:'크다', rom:'keuda', jp:'大きい'},{kr:'작다', rom:'jakda', jp:'小さい'}]
+  },
+  { cat:'買い物', kr:'할인해 주세요', rom:'harinhe juseyo', jp:'割引してください',
+    usage:'좀 깎아 주세요. 할인해 주세요', usageRom:'jom kkakka juseyo. harinhe juseyo',
+    usageNote:'「少し負けてください。割引してください」→ 市場や個人店で交渉する時に',
+    tip:'デパートでは使いにくいですが、市場（시장）では値引き交渉が文化的にOKなことも！',
+    vocab:[{kr:'시장', rom:'sijang', jp:'市場'},{kr:'깎다', rom:'kkakda', jp:'値引きする'},{kr:'세일', rom:'seil', jp:'セール'}]
+  },
+  // 交通
+  { cat:'交通', kr:'~에 어떻게 가요?', rom:'~e eotteoke gayo?', jp:'〜へはどうやって行きますか？',
+    usage:'명동에 어떻게 가요?', usageRom:'myeongdonge eotteoke gayo?',
+    usageNote:'「明洞へはどうやって行きますか？」→ 目的地の後に「에 어떻게 가요?」をつければOK',
+    tip:'地下鉄を使うなら「지하철(jihacheol)」、バスは「버스(beoseu)」、タクシーは「택시(taeksi)」。',
+    vocab:[{kr:'지하철', rom:'jihacheol', jp:'地下鉄'},{kr:'역', rom:'yeok', jp:'駅'},{kr:'버스', rom:'beoseu', jp:'バス'}]
+  },
+  { cat:'交通', kr:'여기서 내려주세요', rom:'yeogiseo naeryeojuseyo', jp:'ここで降ろしてください',
+    usage:'저기요, 여기서 내려주세요', usageRom:'jeogiyo, yeogiseo naeryeojuseyo',
+    usageNote:'「すみません、ここで降ろしてください」→ タクシーや車の中で使える',
+    tip:'タクシーに乗ったら行き先を「~까지 가주세요(~まで行ってください)」で伝えましょう。',
+    vocab:[{kr:'여기', rom:'yeogi', jp:'ここ'},{kr:'저기', rom:'jeogi', jp:'あそこ'},{kr:'까지', rom:'kkaji', jp:'〜まで'}]
+  },
+  // 緊急・困った時
+  { cat:'緊急・困った時', kr:'모르겠어요', rom:'moreugesseoyo', jp:'わかりません',
+    usage:'죄송해요, 잘 모르겠어요', usageRom:'jwesonghaeyo, jal moreugesseoyo',
+    usageNote:'「すみません、よくわかりません」→ 正直に伝えるのが大事！',
+    tip:'「죄송해요」は「すみません（申し訳ない）」。「실례합니다」より謝罪のニュアンスが強いです。',
+    vocab:[{kr:'죄송해요', rom:'jwesonghaeyo', jp:'すみません'},{kr:'잘', rom:'jal', jp:'よく'},{kr:'천천히', rom:'cheoncheonhi', jp:'ゆっくり'}]
+  },
+  { cat:'緊急・困った時', kr:'도와주세요!', rom:'dowajuseyo!', jp:'助けてください！',
+    usage:'저 좀 도와주세요! 길을 잃었어요', usageRom:'jeo jom dowajuseyo! gireul ireosseoyo',
+    usageNote:'「ちょっと助けてください！道に迷いました」',
+    tip:'緊急時は「빨리(ppalli, 早く)」をつけると「빨리 도와주세요！（急いで助けてください）」になります。',
+    vocab:[{kr:'길', rom:'gil', jp:'道'},{kr:'잃다', rom:'irda', jp:'失う・迷う'},{kr:'경찰', rom:'gyeongchal', jp:'警察'}]
+  },
+  // 気持ち
+  { cat:'気持ち・感情', kr:'너무 좋아요!', rom:'neomu joayo!', jp:'とても好きです！ / 最高！',
+    usage:'한국 음식 너무 좋아요!', usageRom:'hanguk eumsik neomu joayo!',
+    usageNote:'「韓国料理、最高です！」→ 好き・いい・嬉しい、全部「좋아요」で表現できます',
+    tip:'「좋다」は「良い・好き」の両方に使えます。「싫다(sirda)」は「嫌い・嫌」の反対語。',
+    vocab:[{kr:'좋아요', rom:'joayo', jp:'好きです・いいです'},{kr:'싫어요', rom:'sireoyo', jp:'嫌いです'},{kr:'음식', rom:'eumsik', jp:'食べ物・料理'}]
+  },
+  { cat:'気持ち・感情', kr:'재미있어요', rom:'jaemiisseoyo', jp:'面白いです / 楽しいです',
+    usage:'이 드라마 진짜 재미있어요!', usageRom:'i deurama jinjja jaemiisseoyo!',
+    usageNote:'「このドラマ、本当に面白いです！」→ ドラマ・映画・話など何にでも使えます',
+    tip:'「진짜」は「本当に・マジで」の意味。若者言葉でよく使われます。「정말」より口語的！',
+    vocab:[{kr:'진짜', rom:'jinjja', jp:'本当に・マジで'},{kr:'드라마', rom:'deurama', jp:'ドラマ'},{kr:'영화', rom:'yeonghwa', jp:'映画'}]
+  },
+];
+
+// =====================
+// STATE
+// =====================
+let currentCat = 'すべて';
+let currentIdx = 0;
+let mode = 'study';
+let answerVisible = false;
+let quizAnswered = false;
+let score = 0;
+let quizTotal = 0;
+let filtered = [];
+
+// =====================
+// INIT
+// =====================
+function getCategories() {
+  const cats = ['すべて', ...new Set(allPhrases.map(p => p.cat))];
+  return cats;
+}
+
+function buildCatTabs() {
+  const tabs = document.getElementById('cat-tabs');
+  tabs.innerHTML = '';
+  getCategories().forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (c === currentCat ? ' active' : '');
+    btn.textContent = c;
+    btn.onclick = () => { currentCat = c; currentIdx = 0; score = 0; quizTotal = 0; buildCatTabs(); updateFiltered(); render(); };
+    tabs.appendChild(btn);
+  });
+}
+
+function updateFiltered() {
+  filtered = currentCat === 'すべて' ? allPhrases : allPhrases.filter(p => p.cat === currentCat);
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('btn-study').classList.toggle('active', m === 'study');
+  document.getElementById('btn-quiz').classList.toggle('active', m === 'quiz');
+  currentIdx = 0; score = 0; quizTotal = 0;
+  render();
+}
+
+// =====================
+// RENDER
+// =====================
+function render() {
+  const p = filtered[currentIdx];
+  if (!p) return;
+
+  // Header
+  document.getElementById('scene-label').textContent = p.cat;
+  document.getElementById('korean-main').textContent = p.kr;
+  document.getElementById('romanization').textContent = p.rom;
+
+  // Counter & progress
+  document.getElementById('counter').textContent = `${currentIdx + 1} / ${filtered.length}`;
+  document.getElementById('progress-fill').style.width = `${((currentIdx + 1) / filtered.length) * 100}%`;
+
+  if (mode === 'study') {
+    document.getElementById('study-area').style.display = 'block';
+    document.getElementById('quiz-area').style.display = 'none';
+    renderStudy(p);
+  } else {
+    document.getElementById('study-area').style.display = 'none';
+    document.getElementById('quiz-area').style.display = 'block';
+    renderQuiz(p);
+  }
+}
+
+function renderStudy(p) {
+  answerVisible = false;
+  document.getElementById('japanese-line').textContent = p.jp;
+  document.getElementById('toggle-btn').textContent = '💬 使い方を見る';
+  document.getElementById('answer-block').classList.remove('visible');
+  document.getElementById('answer-kr').textContent = p.usage;
+  document.getElementById('answer-rom').textContent = p.usageRom;
+  document.getElementById('answer-note').textContent = p.usageNote;
+  document.getElementById('tip-box').innerHTML = `<strong>📌 発音・文化メモ</strong>${p.tip}`;
+
+  const vr = document.getElementById('vocab-row');
+  vr.innerHTML = '';
+  (p.vocab || []).forEach(v => {
+    const chip = document.createElement('div');
+    chip.className = 'vocab-chip';
+    chip.innerHTML = `<span class="kr">${v.kr}</span>${v.rom} ／ ${v.jp}`;
+    vr.appendChild(chip);
+  });
+}
+
+function renderQuiz(p) {
+  quizAnswered = false;
+  document.getElementById('q-question').textContent = `「${p.jp}」を韓国語で言うと？`;
+  document.getElementById('result-msg').className = 'result-msg';
+  document.getElementById('score-display').textContent = `スコア: ${score} / ${quizTotal}`;
+
+  // Build choices: correct + 3 random wrong
+  const wrong = filtered.filter((_, i) => i !== currentIdx);
+  const shuffledWrong = wrong.sort(() => Math.random() - 0.5).slice(0, 3);
+  const choices = [p, ...shuffledWrong].sort(() => Math.random() - 0.5);
+
+  const container = document.getElementById('quiz-choices');
+  container.innerHTML = '';
+  choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span>${c.kr}</span><br><small style="font-family:sans-serif;font-size:11px;color:#888">${c.rom}</small>`;
+    btn.onclick = () => {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      quizTotal++;
+      const isCorrect = c.kr === p.kr;
+      if (isCorrect) {
+        score++;
+        btn.classList.add('correct');
+        const rm = document.getElementById('result-msg');
+        rm.textContent = '✅ 正解！ 잘했어요！（よくできました！）';
+        rm.className = 'result-msg ok';
+      } else {
+        btn.classList.add('wrong');
+        // show correct
+        container.querySelectorAll('.choice-btn').forEach(b => {
+          if (b.querySelector('span').textContent === p.kr) b.classList.add('correct');
+        });
+        const rm = document.getElementById('result-msg');
+        rm.textContent = `❌ 不正解。正解は「${p.kr}」でした。`;
+        rm.className = 'result-msg ng';
+      }
+      container.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+      document.getElementById('score-display').textContent = `スコア: ${score} / ${quizTotal}`;
+    };
+    container.appendChild(btn);
+  });
+}
+
+function toggleAnswer() {
+  answerVisible = !answerVisible;
+  document.getElementById('answer-block').classList.toggle('visible', answerVisible);
+  document.getElementById('toggle-btn').textContent = answerVisible ? '🙈 閉じる' : '💬 使い方を見る';
+}
+
+function next() {
+  if (currentIdx < filtered.length - 1) currentIdx++;
+  else currentIdx = 0;
+  render();
+}
+
+function prev() {
+  if (currentIdx > 0) currentIdx--;
+  else currentIdx = filtered.length - 1;
+  render();
+}
+
+// =====================
+// TEXT TO SPEECH
+// =====================
+let ttsSupported = false;
+let krVoice = null;
+let speakTimer = null;
+
+function initTTS() {
+  if (!window.speechSynthesis) return;
+  ttsSupported = true;
+
+  function findKoreanVoice() {
+    const voices = speechSynthesis.getVoices();
+    // 韓国語音声を優先度順に検索
+    krVoice = voices.find(v => v.lang === 'ko-KR')
+           || voices.find(v => v.lang.startsWith('ko'))
+           || null;
+  }
+
+  findKoreanVoice();
+  // Chrome はonvoiceschangedで遅延ロードされる
+  speechSynthesis.onvoiceschanged = findKoreanVoice;
+}
+
+function speak(text, btnEl, labelEl) {
+  if (!ttsSupported) {
+    document.getElementById('no-tts-msg').style.display = 'block';
+    return;
+  }
+  speechSynthesis.cancel();
+
+  if (btnEl.classList.contains('speaking')) {
+    btnEl.classList.remove('speaking');
+    if (labelEl) labelEl.textContent = '発音を聞く';
+    return;
+  }
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ko-KR';
+  utter.rate = 0.85;
+  utter.pitch = 1.0;
+  if (krVoice) utter.voice = krVoice;
+
+  btnEl.classList.add('speaking');
+  if (labelEl) labelEl.textContent = '再生中…';
+
+  utter.onend = () => {
+    btnEl.classList.remove('speaking');
+    if (labelEl) labelEl.textContent = '発音を聞く';
+  };
+  utter.onerror = () => {
+    btnEl.classList.remove('speaking');
+    if (labelEl) labelEl.textContent = '発音を聞く';
+  };
+
+  speechSynthesis.speak(utter);
+}
+
+function speakMain() {
+  const p = filtered[currentIdx];
+  if (!p) return;
+  speak(p.kr, document.getElementById('speak-main-btn'), document.getElementById('speak-main-label'));
+}
+
+function speakQuiz() {
+  const p = filtered[currentIdx];
+  if (!p) return;
+  speak(p.kr, document.getElementById('speak-quiz-btn'), null);
+}
+
+// =====================
+// START
+// =====================
+buildCatTabs();
+updateFiltered();
+render();
+initTTS();
+</script>
+</body>
+</html>
